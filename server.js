@@ -29,7 +29,7 @@ app.use(express.json({ limit : '30mb', extended : true}))
 // app.use(express.static("out"));
 app.use(express.static('build'))
 app.use(cors({
-    origin : ["http://localhost:3000", "https://homely-v1.vercel.app/"],
+    origin : ["http://localhost:3000", "https://homely-v1.vercel.app"],
     methods : ['GET', 'POST', 'PATCH', 'DELETE'],
     allowedHeaders : ['Content-Type', 'Authorization'],
     
