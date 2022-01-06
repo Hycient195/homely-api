@@ -7,7 +7,7 @@ module.exports.dbConnection = () =>{
         MONGO_STRING = process.env.MONGO_DB_URI :
         MONGO_STRING = process.env.MONGO_DB_URL
 
-        mongoose.connect(MONGO_STRING,{
+    mongoose.connect(MONGO_STRING,{
         useNewUrlParser : true,
         useUnifiedTopology : true,
         // useCreateIndex : true,
