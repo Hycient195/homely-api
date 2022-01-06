@@ -3,11 +3,11 @@ const mongoose = require('mongoose')
 module.exports.dbConnection = () =>{
 
     let MONGO_STRING;
-    process.env == 'production' ?
-        MONGO_STRING = process.env.MONGO_DB_URL :
-        MONGO_STRING = process.env.MONGO_DB_URI
+    process.env.NODE_ENV == 'development' ?
+        MONGO_STRING = process.env.MONGO_DB_URI :
+        MONGO_STRING = process.env.MONGO_DB_URL
 
-    mongoose.connect(MONGO_STRING,{
+        mongoose.connect(MONGO_STRING,{
         useNewUrlParser : true,
         useUnifiedTopology : true,
         // useCreateIndex : true,
