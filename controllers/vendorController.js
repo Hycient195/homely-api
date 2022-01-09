@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 /* Method POST - localhost:7000/api/vendor/sign_up */
 module.exports.sign_upVendor = async (req, res) =>{
     const vendor = req.body
-    console.log(vendor)
+
     try {
         const emailExists = await VendorModel.findOne({ email : vendor.email})
 
@@ -31,6 +31,9 @@ module.exports.sign_upVendor = async (req, res) =>{
         const token = jwt.sign({newVendor : newVendor.email, id : newVendor._id}, process.env.JWT_SECRET_STRING,{
             expiresIn : '1d'
         })
+
+        console.log('Vendor signed up')
+        
         res.status(200).json({ result : newVendor, token : token })
         
     } catch (error) {
@@ -47,21 +50,23 @@ module.exports.sign_inVendor = async (req, res) =>{
     try {
         const existingUser = await VendorModel.findOne({ email });
 
-        if(!existingUser) res.status(404).json({message : `Email does not exist`});
+        if(!existingUser) throw new Error('Email not registered');
 
         const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
 
-        if(!isPasswordCorrect) res.status(404).json({message : `Invalid Password`});
-        console.log(isPasswordCorrect)
+        if(!isPasswordCorrect) throw new Error('Incorrect password')
+        // console.log(isPasswordCorrect)
         const token = jwt.sign({email : existingUser.email, id : existingUser._id}, process.env.JWT_SECRET_STRING,{
             expiresIn : '1d'
         });
 
+        console.log('Vendor signed up')
+
         res.status(200).json({ result : existingUser, token : token });
         
     } catch (error) {
-        console.log('Unable to sign in vendor', error)
-        res.status(404).json({message : 'Unable to sign in vendor'})
+        console.log('Unable to sign in vendor', error.message)
+        res.status(400).json({ error : error.message })
     }
 }
 
